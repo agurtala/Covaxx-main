@@ -1,7 +1,7 @@
 package ASS.covaxx.controller;
 
-import ASS.covaxx.model.Document;
-import ASS.covaxx.repo.DocumentRepo;
+import ASS.covaxx.model.Documents;
+import ASS.covaxx.repo.DocumentsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -9,24 +9,24 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 
-public class DocumentController {
+public class DocumentsController {
 
     @Autowired
-    private DocumentRepo DocumentRepo;
+    private DocumentsRepo DocumentsRepo;
 
     @GetMapping("/certificate")
     public @ResponseBody
-    Collection<Document> getAll() {
+    Collection<Documents> getAll() {
 
-        return this.DocumentRepo.getAll();
+        return this.DocumentsRepo.getAll();
     }
 
     @GetMapping("/certificate/{CertID}")
     public @ResponseBody
-    Document getOne(
+    Documents getOne(
             @PathVariable String CertID) {
 
-        Document covaxx = this.DocumentRepo.getById(CertID);
+        Documents covaxx = this.DocumentsRepo.getById(CertID);
 
         if (covaxx == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no covaxx certificate with this ID");
@@ -36,7 +36,7 @@ public class DocumentController {
 
     @PostMapping("/certificate")
     public @ResponseBody
-    Document createNew(@RequestBody Document covaxx) {
+    Documents createNew(@RequestBody Documents covaxx) {
 
         if (covaxx.DocID == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Certificate must specify an ID");
@@ -50,21 +50,21 @@ public class DocumentController {
         if (covaxx.Facility == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Facility must specify a name");
 
-        Document existingCovaxx = this.DocumentRepo.getById(covaxx.DocID);
+        Documents existingCovaxx = this.DocumentsRepo.getById(covaxx.DocID);
 
         if (existingCovaxx != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This Covaxx patient ID is already used");
         }
-        this.DocumentRepo.save(covaxx);
+        this.DocumentsRepo.save(covaxx);
 
         return covaxx;
     }
 
     @PatchMapping("/patients/{patientId}")
     public @ResponseBody
-    Document updateExisting(@PathVariable String patientId, @RequestBody Document changes) {
+    Documents updateExisting(@PathVariable String patientId, @RequestBody Documents changes) {
 
-        Document existingCovaxx = this.DocumentRepo.getById(patientId);
+        Documents existingCovaxx = this.DocumentsRepo.getById(patientId);
 
         if (existingCovaxx == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Covaxx profile does not exist");
@@ -79,7 +79,7 @@ public class DocumentController {
         if (changes.Facility != null)
             existingCovaxx.Facility = changes.Facility;
 
-        this.DocumentRepo.save(existingCovaxx);
+        this.DocumentsRepo.save(existingCovaxx);
 
         return existingCovaxx;
 

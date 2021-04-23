@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @org.springframework.data.mongodb.core.mapping.Document
-public class Document {
+public class Documents {
     @Id
     public String DocID;
 
