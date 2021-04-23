@@ -1,7 +1,7 @@
 package ASS.covaxx.controller;
 
-import ASS.covaxx.model.Covaxx;
-import ASS.covaxx.repo.CovaxxRepo;
+import ASS.covaxx.model.Patients;
+import ASS.covaxx.repo.PatientsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,26 +11,27 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collection;
 
 @Controller
-public class CovaxxController {
+public class PatientsController {
 
     @Autowired
-    private CovaxxRepo CovaxxRepo;
+    private PatientsRepo PatientsRepo;
 
     @GetMapping("/patients")
-    public @ResponseBody Collection<Covaxx> getAll(
+    public @ResponseBody Collection<Patients> getAll(
             @RequestParam(required = false) String patientName,
             @RequestParam(required = false) String CertType
 
     ){
-        return this.CovaxxRepo.find(patientName, CertType);
+        return this.PatientsRepo.find(patientName, CertType);
     }
 
     @GetMapping("/patients/{patientId}")
-   public @ResponseBody Covaxx getOne(
+   public @ResponseBody
+    Patients getOne(
            @PathVariable String patientId)
     {
 
-        Covaxx covaxx =  this.CovaxxRepo.getById(patientId);
+        Patients covaxx =  this.PatientsRepo.getById(patientId);
 
         if (covaxx == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no covaxx patient with this ID");
@@ -39,7 +40,8 @@ public class CovaxxController {
    }
 
    @PostMapping("/patients")
-   public @ResponseBody Covaxx createNew(@RequestBody Covaxx covaxx) {
+   public @ResponseBody
+   Patients createNew(@RequestBody Patients covaxx) {
 
         if (covaxx.patientId == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify an ID");
@@ -62,20 +64,21 @@ public class CovaxxController {
        if (covaxx.Facility == null)
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Facility must specify a medical centre name");
 
-       Covaxx existingCovaxx = this.CovaxxRepo.getById(covaxx.patientId);
+       Patients existingCovaxx = this.PatientsRepo.getById(covaxx.patientId);
 
        if (existingCovaxx != null) {
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This Covaxx patient ID is already used");
        }
-        this.CovaxxRepo.save(covaxx);
+        this.PatientsRepo.save(covaxx);
 
         return covaxx;
    }
 
    @PatchMapping("/patients/{patientId}")
-   public @ResponseBody Covaxx updateExisting(@PathVariable String patientId, @RequestBody Covaxx changes) {
+   public @ResponseBody
+   Patients updateExisting(@PathVariable String patientId, @RequestBody Patients changes) {
 
-        Covaxx existingCovaxx = this.CovaxxRepo.getById(patientId);
+        Patients existingCovaxx = this.PatientsRepo.getById(patientId);
 
         if (existingCovaxx == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Covaxx profile does not exist");
@@ -99,7 +102,7 @@ public class CovaxxController {
        if (changes.TimeHM != null)
            existingCovaxx.TimeHM = changes.TimeHM;
 
-        this.CovaxxRepo.save(existingCovaxx);
+        this.PatientsRepo.save(existingCovaxx);
 
         return existingCovaxx;
 

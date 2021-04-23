@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document
-public class Covaxx {
+public class Patients {
 
     @Id
     public String patientId;
