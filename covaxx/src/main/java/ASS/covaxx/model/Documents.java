@@ -4,7 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@org.springframework.data.mongodb.core.mapping.Document
+@Document
 public class Documents {
     @Id
     public String DocID;

@@ -1,4 +1,12 @@
 ASS/covaxx/CovaxxApplication.class
-ASS/covaxx/controller/CovaxxController.class
-ASS/covaxx/model/Covaxx.class
-ASS/covaxx/repo/CovaxxRepo.class
+ASS/covaxx/config/JsonConfig.class
+ASS/covaxx/model/Patient.class
+ASS/covaxx/repo/DocumentsRepo.class
+ASS/covaxx/config/JsonConfig$ObjectIdSerializer.class
+ASS/covaxx/repo/FilesRepo.class
+ASS/covaxx/model/Files.class
+ASS/covaxx/model/Documents.class
+ASS/covaxx/controller/FilesController.class
+ASS/covaxx/controller/DocumentsController.class
+ASS/covaxx/repo/PatientRepo.class
+ASS/covaxx/controller/PatientController.class
