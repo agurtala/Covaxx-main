@@ -1,36 +1,32 @@
 package ASS.covaxx.controller;
 
-import ASS.covaxx.model.Certificate;
-import ASS.covaxx.repo.CertificateRepo;
+import ASS.covaxx.model.Document;
+import ASS.covaxx.repo.DocumentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collection;
 
-public class CertificateController {
+public class DocumentController {
 
     @Autowired
-    private CertificateRepo CertificateRepo;
+    private DocumentRepo DocumentRepo;
 
     @GetMapping("/certificate")
     public @ResponseBody
-    Collection<Certificate> getAll(
-            @RequestParam(required = false) String CertID,
-            @RequestParam(required = false) String CertType
+    Collection<Document> getAll() {
 
-    ) {
-        return this.CertificateRepo.find(CertID, CertType);
+        return this.DocumentRepo.getAll();
     }
 
     @GetMapping("/certificate/{CertID}")
     public @ResponseBody
-    Certificate getOne(
+    Document getOne(
             @PathVariable String CertID) {
 
-        Certificate covaxx = this.CertificateRepo.getById(CertID);
+        Document covaxx = this.DocumentRepo.getById(CertID);
 
         if (covaxx == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no covaxx certificate with this ID");
@@ -40,50 +36,50 @@ public class CertificateController {
 
     @PostMapping("/certificate")
     public @ResponseBody
-    Certificate createNew(@RequestBody Certificate covaxx) {
+    Document createNew(@RequestBody Document covaxx) {
 
-        if (covaxx.CertID == null)
+        if (covaxx.DocID == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Certificate must specify an ID");
 
-        if (covaxx.CertType == null)
+        if (covaxx.DocType == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Certificate Type must be specify");
 
-        if (covaxx.CertResult == null)
+        if (covaxx.DocResult == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Certificate Result must be specify");
 
         if (covaxx.Facility == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Facility must specify a name");
 
-        Certificate existingCovaxx = this.CertificateRepo.getById(covaxx.CertID);
+        Document existingCovaxx = this.DocumentRepo.getById(covaxx.DocID);
 
         if (existingCovaxx != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This Covaxx patient ID is already used");
         }
-        this.CertificateRepo.save(covaxx);
+        this.DocumentRepo.save(covaxx);
 
         return covaxx;
     }
 
     @PatchMapping("/patients/{patientId}")
     public @ResponseBody
-    Certificate updateExisting(@PathVariable String patientId, @RequestBody Certificate changes) {
+    Document updateExisting(@PathVariable String patientId, @RequestBody Document changes) {
 
-        Certificate existingCovaxx = this.CertificateRepo.getById(patientId);
+        Document existingCovaxx = this.DocumentRepo.getById(patientId);
 
         if (existingCovaxx == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Covaxx profile does not exist");
         }
 
-        if (changes.CertType != null)
-            existingCovaxx.CertType = changes.CertType;
+        if (changes.DocType != null)
+            existingCovaxx.DocType = changes.DocType;
 
-        if (changes.CertResult != null)
-            existingCovaxx.CertResult = changes.CertResult;
+        if (changes.DocResult != null)
+            existingCovaxx.DocResult = changes.DocResult;
 
         if (changes.Facility != null)
             existingCovaxx.Facility = changes.Facility;
 
-        this.CertificateRepo.save(existingCovaxx);
+        this.DocumentRepo.save(existingCovaxx);
 
         return existingCovaxx;
 

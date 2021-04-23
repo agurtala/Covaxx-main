@@ -4,13 +4,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
-public class Certificate {
+@org.springframework.data.mongodb.core.mapping.Document
+public class Document {
     @Id
-    public String CertID;
+    public String DocID;
 
     @Indexed
-    public String CertType;
-    public String CertResult;
+    public String DocType;
+    public String DocResult;
     public String Facility;
 }
