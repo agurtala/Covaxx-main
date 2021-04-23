@@ -1,7 +1,7 @@
 package ASS.covaxx.controller;
 
-import ASS.covaxx.model.Patients;
-import ASS.covaxx.repo.PatientsRepo;
+import ASS.covaxx.model.Patient;
+import ASS.covaxx.repo.PatientRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,27 +11,27 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collection;
 
 @Controller
-public class PatientsController {
+public class PatientController {
 
     @Autowired
-    private PatientsRepo PatientsRepo;
+    private PatientRepo PatientRepo;
 
     @GetMapping("/patients")
-    public @ResponseBody Collection<Patients> getAll(
+    public @ResponseBody Collection<Patient> getAll(
             @RequestParam(required = false) String patientName,
             @RequestParam(required = false) String CertType
 
     ){
-        return this.PatientsRepo.find(patientName, CertType);
+        return this.PatientRepo.find(patientName, CertType);
     }
 
     @GetMapping("/patients/{patientId}")
    public @ResponseBody
-    Patients getOne(
+    Patient getOne(
            @PathVariable String patientId)
     {
 
-        Patients covaxx =  this.PatientsRepo.getById(patientId);
+        Patient covaxx =  this.PatientRepo.getById(patientId);
 
         if (covaxx == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no covaxx patient with this ID");
@@ -41,7 +41,7 @@ public class PatientsController {
 
    @PostMapping("/patients")
    public @ResponseBody
-   Patients createNew(@RequestBody Patients covaxx) {
+   Patient createNew(@RequestBody Patient covaxx) {
 
         if (covaxx.patientId == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify an ID");
@@ -55,30 +55,21 @@ public class PatientsController {
        if (covaxx.patientName == null)
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify an name");
 
-       if (covaxx.CertType == null)
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify type of certificate");
-
-       if (covaxx.CertResult == null)
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify given result");
-
-       if (covaxx.Facility == null)
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Facility must specify a medical centre name");
-
-       Patients existingCovaxx = this.PatientsRepo.getById(covaxx.patientId);
+       Patient existingCovaxx = this.PatientRepo.getById(covaxx.patientId);
 
        if (existingCovaxx != null) {
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This Covaxx patient ID is already used");
        }
-        this.PatientsRepo.save(covaxx);
+        this.PatientRepo.save(covaxx);
 
         return covaxx;
    }
 
    @PatchMapping("/patients/{patientId}")
    public @ResponseBody
-   Patients updateExisting(@PathVariable String patientId, @RequestBody Patients changes) {
+   Patient updateExisting(@PathVariable String patientId, @RequestBody Patient changes) {
 
-        Patients existingCovaxx = this.PatientsRepo.getById(patientId);
+        Patient existingCovaxx = this.PatientRepo.getById(patientId);
 
         if (existingCovaxx == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Covaxx profile does not exist");
@@ -87,22 +78,13 @@ public class PatientsController {
         if (changes.patientName != null)
             existingCovaxx.patientName = changes.patientName;
 
-       if (changes.CertType != null)
-           existingCovaxx.CertType = changes.CertType;
-
-       if (changes.CertResult != null)
-           existingCovaxx.CertResult = changes.CertResult;
-
-       if (changes.Facility != null)
-           existingCovaxx.Facility = changes.Facility;
-
        if (changes.DDMY != null)
            existingCovaxx.DDMY = changes.DDMY;
 
        if (changes.TimeHM != null)
            existingCovaxx.TimeHM = changes.TimeHM;
 
-        this.PatientsRepo.save(existingCovaxx);
+        this.PatientRepo.save(existingCovaxx);
 
         return existingCovaxx;
 
