@@ -2,6 +2,7 @@ package ASS.covaxx.controller;
 
 import ASS.covaxx.model.Documents;
 import ASS.covaxx.model.Files;
+import ASS.covaxx.model.Patients;
 import ASS.covaxx.repo.DocumentsRepo;
 import ASS.covaxx.repo.FilesRepo;
 import ASS.covaxx.repo.PatientsRepo;
@@ -23,34 +24,80 @@ public class FilesController {
     private DocumentsRepo Documents;
 
     @Autowired
-    private PatientsRepo Patient;
+    private PatientsRepo Patients;
 
-    @GetMapping("/patients/{PatID}/Files")
+    @GetMapping("/patients/{patientId}/Files")
     private @ResponseBody
     List<ASS.covaxx.model.Files> getFiles(
-            @PathVariable String DocumentsID
+            @PathVariable String patientId
     ){
 
-        Documents document = this.Documents.getById(DocumentsID);
+        Patients patients = this.Patients.getById(patientId);
 
-        if (document == null)
+        if (patients == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no covaxx certificate with this ID");
 
-        return Files.find(DocumentsID,null);
+        return Files.find(patientId, null);
 
     }
+    @GetMapping("/Files/{CertID}")
+    public @ResponseBody
+    Files getOne(
+            @PathVariable String CertID)
+    {
 
-    @PostMapping("/patients/{PatID}/Files")
+        Files files = this.Files.getById(CertID);
+
+        if (files == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"There is no file with this CertID");
+
+        return files;
+    }
+
+    @PatchMapping("/patients/{patientId}")
+    public @ResponseBody
+    Files updateExisting(@PathVariable String sessionId, @RequestBody Files changes) {
+
+        Files existingFiles = this.Files.getById(sessionId);
+
+        if (existingFiles == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This CertID does not exist");
+        }
+
+        if (changes.certificate != null) {
+            existingFiles.certificate = changes.certificate;
+        }
+
+        if (changes.certificateDate != null) {
+            existingFiles.certificateDate = changes.certificateDate;
+        }
+
+        if (changes.certificateTime != null) {
+            existingFiles.certificateTime = changes.certificateTime;
+        }
+        if (changes.DocID != null) {
+            existingFiles.DocID = changes.DocID;
+        }
+        if (changes.patientId != null) {
+            existingFiles.patientId = changes.patientId;
+        }
+
+        this.Files.save(existingFiles);
+
+        return existingFiles;
+    }
+
+    @PostMapping("/patients/{patientId}/Files")
     private @ResponseBody
-    Files createfile(
-            @PathVariable String DocumentsID,
+    Files createFiles(
+            @PathVariable String patientId,
             @RequestBody Files files
 
     ){
-        if (files.DocumentsID != null)
+        if (files.CertID != null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New file should not specify any ID");
 
-        files.DocumentsID = DocumentsID;
+        files.patientId = patientId;
 
         vaildate(files);
 
@@ -60,19 +107,19 @@ public class FilesController {
 
     private void vaildate(Files files){
 
-        if (files.DocumentsID == null){
+        if (files.patientId == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "no patient ID specified");
+        }
+
+        if (Files.getById(files.patientId) == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " There is no patient with this ID ");
+        }
+        if (files.DocID == null){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "no Document specified");
         }
 
-        if (Files.getById(files.DocumentsID) == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " no Patient ID specified");
-        }
-        if (files.PatID == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "no Document specified");
-        }
-
-        if (Files.getById(files.PatID) == null){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " no Patient ID specified");
+        if (Files.getById(files.DocID) == null){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, " There no Document with this ID");
         }
         }
     }

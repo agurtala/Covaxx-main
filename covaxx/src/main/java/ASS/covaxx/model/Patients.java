@@ -9,11 +9,11 @@ public class Patients {
 
     @Id
     public String patientId;
-    public String DDMY;
-    public String TimeHM;
 
     @Indexed
-    public String patientName;
+    public String patientFname;
+    public String patientLname;
+
 
 
 }

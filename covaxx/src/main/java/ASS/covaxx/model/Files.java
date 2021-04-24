@@ -12,12 +12,15 @@ import java.util.Map;
 public class Files {
 
     @Id
-    public ObjectId CertID;
+    public ObjectId certID;
 
-    public Map<String, String> Certificates = new HashMap<>();
+    public Map<String, String> certificate = new HashMap<>();
 
-    public String DocumentsID;
-    public String PatID;
+    public String certificateDate;
+    public String certificateTime;
+
+    public String DocID;
+    public String patientId;
 
 
 }

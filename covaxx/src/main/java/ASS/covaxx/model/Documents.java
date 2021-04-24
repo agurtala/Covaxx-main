@@ -9,7 +9,6 @@ public class Documents {
     @Id
     public String DocID;
 
-    @Indexed
     public String DocType;
     public String DocResult;
     public String Facility;

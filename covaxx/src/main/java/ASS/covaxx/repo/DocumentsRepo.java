@@ -9,6 +9,7 @@ import java.util.Collection;
 
 @Repository
 public class DocumentsRepo {
+
     @Autowired
     private MongoTemplate mongo;
 

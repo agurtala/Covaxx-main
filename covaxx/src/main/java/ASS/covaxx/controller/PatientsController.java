@@ -46,14 +46,11 @@ public class PatientsController {
         if (covaxx.patientId == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify an ID");
 
-       if (covaxx.DDMY == null)
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date must be specify");
+       if (covaxx.patientFname == null)
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify First Name");
 
-       if (covaxx.TimeHM == null)
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Date must be specify");
-
-       if (covaxx.patientName == null)
-           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify an name");
+       if (covaxx.patientLname == null)
+           throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify Last Name");
 
        Patients existingCovaxx = this.PatientsRepo.getById(covaxx.patientId);
 
@@ -75,14 +72,12 @@ public class PatientsController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Covaxx profile does not exist");
         }
 
-        if (changes.patientName != null)
-            existingCovaxx.patientName = changes.patientName;
+        if (changes.patientFname != null)
+            existingCovaxx.patientFname = changes.patientFname;
 
-       if (changes.DDMY != null)
-           existingCovaxx.DDMY = changes.DDMY;
+       if (changes.patientLname != null)
+           existingCovaxx.patientLname = changes.patientLname;
 
-       if (changes.TimeHM != null)
-           existingCovaxx.TimeHM = changes.TimeHM;
 
         this.PatientsRepo.save(existingCovaxx);
 

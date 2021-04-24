@@ -26,62 +26,62 @@ public class DocumentsController {
     Documents getOne(
             @PathVariable String DocID) {
 
-        Documents covaxx = this.DocumentsRepo.getById(DocID);
+        Documents documents = this.DocumentsRepo.getById(DocID);
 
-        if (covaxx == null)
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no covaxx certificate with this ID");
+        if (documents == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no documents certificate with this DocID");
 
-        return covaxx;
+        return documents;
     }
 
     @PostMapping("/documents")
     public @ResponseBody
-    Documents createNew(@RequestBody Documents covaxx) {
+    Documents createNew(@RequestBody Documents documents) {
 
-        if (covaxx.DocID == null)
+        if (documents.DocID == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Certificate must specify an ID");
 
-        if (covaxx.DocType == null)
+        if (documents.DocType == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Certificate Type must be specify");
 
-        if (covaxx.DocResult == null)
+        if (documents.DocResult == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Certificate Result must be specify");
 
-        if (covaxx.Facility == null)
+        if (documents.Facility == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Facility must specify a name");
 
-        Documents existingCovaxx = this.DocumentsRepo.getById(covaxx.DocID);
+        Documents existingCovaxx = this.DocumentsRepo.getById(documents.DocID);
 
         if (existingCovaxx != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This Covaxx patient ID is already used");
         }
-        this.DocumentsRepo.save(covaxx);
+        this.DocumentsRepo.save(documents);
 
-        return covaxx;
+        return documents;
     }
 
     @PatchMapping("/document/{DocID}")
     public @ResponseBody
     Documents updateExisting(@PathVariable String DocID, @RequestBody Documents changes) {
 
-        Documents existingCovaxx = this.DocumentsRepo.getById(DocID);
+        Documents existingDocuments = this.DocumentsRepo.getById(DocID);
 
-        if (existingCovaxx == null) {
+        if (existingDocuments == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Covaxx profile does not exist");
         }
 
         if (changes.DocType != null)
-            existingCovaxx.DocType = changes.DocType;
+            existingDocuments.DocType = changes.DocType;
 
         if (changes.DocResult != null)
-            existingCovaxx.DocResult = changes.DocResult;
+            existingDocuments.DocResult = changes.DocResult;
 
         if (changes.Facility != null)
-            existingCovaxx.Facility = changes.Facility;
+            existingDocuments.Facility = changes.Facility;
 
-        this.DocumentsRepo.save(existingCovaxx);
+        this.DocumentsRepo.save(existingDocuments);
 
-        return existingCovaxx;
+        return existingDocuments;
 
 
     }
