@@ -1,4 +1,11 @@
-/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/model/Covaxx.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/controller/FilesController.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/config/JsonConfig.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/model/Documents.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/model/Files.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/repo/PatientRepo.java
 /Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/CovaxxApplication.java
-/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/controller/CovaxxController.java
-/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/repo/CovaxxRepo.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/controller/PatientController.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/controller/DocumentsController.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/model/Patient.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/repo/FilesRepo.java
+/Users/alfiyyahgurtala/Desktop/Covaxx-main/covaxx/src/main/java/ASS/covaxx/repo/DocumentsRepo.java

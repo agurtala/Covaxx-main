@@ -14,19 +14,19 @@ public class DocumentsController {
     @Autowired
     private DocumentsRepo DocumentsRepo;
 
-    @GetMapping("/certificate")
+    @GetMapping("/documents")
     public @ResponseBody
     Collection<Documents> getAll() {
 
         return this.DocumentsRepo.getAll();
     }
 
-    @GetMapping("/certificate/{CertID}")
+    @GetMapping("/documents/{DocID}")
     public @ResponseBody
     Documents getOne(
-            @PathVariable String CertID) {
+            @PathVariable String DocID) {
 
-        Documents covaxx = this.DocumentsRepo.getById(CertID);
+        Documents covaxx = this.DocumentsRepo.getById(DocID);
 
         if (covaxx == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no covaxx certificate with this ID");
@@ -34,7 +34,7 @@ public class DocumentsController {
         return covaxx;
     }
 
-    @PostMapping("/certificate")
+    @PostMapping("/documents")
     public @ResponseBody
     Documents createNew(@RequestBody Documents covaxx) {
 
@@ -60,11 +60,11 @@ public class DocumentsController {
         return covaxx;
     }
 
-    @PatchMapping("/patients/{patientId}")
+    @PatchMapping("/document/{DocID}")
     public @ResponseBody
-    Documents updateExisting(@PathVariable String patientId, @RequestBody Documents changes) {
+    Documents updateExisting(@PathVariable String DocID, @RequestBody Documents changes) {
 
-        Documents existingCovaxx = this.DocumentsRepo.getById(patientId);
+        Documents existingCovaxx = this.DocumentsRepo.getById(DocID);
 
         if (existingCovaxx == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Covaxx profile does not exist");
