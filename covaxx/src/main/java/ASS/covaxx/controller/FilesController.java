@@ -4,7 +4,7 @@ import ASS.covaxx.model.Documents;
 import ASS.covaxx.model.Files;
 import ASS.covaxx.repo.DocumentsRepo;
 import ASS.covaxx.repo.FilesRepo;
-import ASS.covaxx.repo.PatientRepo;
+import ASS.covaxx.repo.PatientsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -23,9 +23,9 @@ public class FilesController {
     private DocumentsRepo Documents;
 
     @Autowired
-    private PatientRepo Patient;
+    private PatientsRepo Patient;
 
-    @GetMapping("/patient/{PatID}/Files")
+    @GetMapping("/patients/{PatID}/Files")
     private @ResponseBody
     List<ASS.covaxx.model.Files> getFiles(
             @PathVariable String DocumentsID
@@ -40,7 +40,7 @@ public class FilesController {
 
     }
 
-    @PostMapping("/patient/{PatID}/Files")
+    @PostMapping("/patients/{PatID}/Files")
     private @ResponseBody
     Files createfile(
             @PathVariable String DocumentsID,

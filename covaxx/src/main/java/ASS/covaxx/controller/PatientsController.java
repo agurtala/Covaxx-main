@@ -1,7 +1,7 @@
 package ASS.covaxx.controller;
 
-import ASS.covaxx.model.Patient;
-import ASS.covaxx.repo.PatientRepo;
+import ASS.covaxx.model.Patients;
+import ASS.covaxx.repo.PatientsRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -11,27 +11,27 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Collection;
 
 @Controller
-public class PatientController {
+public class PatientsController {
 
     @Autowired
-    private PatientRepo PatientRepo;
+    private PatientsRepo PatientsRepo;
 
     @GetMapping("/patients")
-    public @ResponseBody Collection<Patient> getAll(
+    public @ResponseBody Collection<Patients> getAll(
             @RequestParam(required = false) String patientName,
             @RequestParam(required = false) String CertType
 
     ){
-        return this.PatientRepo.find(patientName, CertType);
+        return this.PatientsRepo.find(patientName, CertType);
     }
 
     @GetMapping("/patients/{patientId}")
    public @ResponseBody
-    Patient getOne(
+    Patients getOne(
            @PathVariable String patientId)
     {
 
-        Patient covaxx =  this.PatientRepo.getById(patientId);
+        Patients covaxx =  this.PatientsRepo.getById(patientId);
 
         if (covaxx == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no covaxx patient with this ID");
@@ -41,7 +41,7 @@ public class PatientController {
 
    @PostMapping("/patients")
    public @ResponseBody
-   Patient createNew(@RequestBody Patient covaxx) {
+   Patients createNew(@RequestBody Patients covaxx) {
 
         if (covaxx.patientId == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify an ID");
@@ -55,21 +55,21 @@ public class PatientController {
        if (covaxx.patientName == null)
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Covaxx Patient must specify an name");
 
-       Patient existingCovaxx = this.PatientRepo.getById(covaxx.patientId);
+       Patients existingCovaxx = this.PatientsRepo.getById(covaxx.patientId);
 
        if (existingCovaxx != null) {
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This Covaxx patient ID is already used");
        }
-        this.PatientRepo.save(covaxx);
+        this.PatientsRepo.save(covaxx);
 
         return covaxx;
    }
 
    @PatchMapping("/patients/{patientId}")
    public @ResponseBody
-   Patient updateExisting(@PathVariable String patientId, @RequestBody Patient changes) {
+   Patients updateExisting(@PathVariable String patientId, @RequestBody Patients changes) {
 
-        Patient existingCovaxx = this.PatientRepo.getById(patientId);
+        Patients existingCovaxx = this.PatientsRepo.getById(patientId);
 
         if (existingCovaxx == null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This Covaxx profile does not exist");
@@ -84,7 +84,7 @@ public class PatientController {
        if (changes.TimeHM != null)
            existingCovaxx.TimeHM = changes.TimeHM;
 
-        this.PatientRepo.save(existingCovaxx);
+        this.PatientsRepo.save(existingCovaxx);
 
         return existingCovaxx;
 
