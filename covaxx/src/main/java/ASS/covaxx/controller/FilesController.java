@@ -1,6 +1,5 @@
 package ASS.covaxx.controller;
 
-import ASS.covaxx.model.Documents;
 import ASS.covaxx.model.Files;
 import ASS.covaxx.model.Patients;
 import ASS.covaxx.repo.DocumentsRepo;
@@ -12,6 +11,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+
+import java.security.cert.Certificate;
 import java.util.List;
 
 @Controller
@@ -31,24 +32,23 @@ public class FilesController {
     List<ASS.covaxx.model.Files> getFiles(
             @PathVariable String patientId
     ){
-
         Patients patients = this.Patients.getById(patientId);
 
         if (patients == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "There is no covaxx certificate with this ID");
 
-        return Files.find(patientId, null);
+        return (List<ASS.covaxx.model.Files>) Files.find(patientId,null);
 
     }
     @GetMapping("/Files/{CertID}")
     public @ResponseBody
     Files getOne(
-            @PathVariable String CertID)
+            @PathVariable String certID)
     {
 
-        Files files = this.Files.getById(CertID);
+        Files files = this.Files.getById(certID);
 
-        if (files == null)
+        if (Files == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,"There is no file with this CertID");
 
         return files;
@@ -56,9 +56,9 @@ public class FilesController {
 
     @PatchMapping("/patients/{patientId}")
     public @ResponseBody
-    Files updateExisting(@PathVariable String sessionId, @RequestBody Files changes) {
+    Files updateExisting(@PathVariable String certID, @RequestBody Files changes) {
 
-        Files existingFiles = this.Files.getById(sessionId);
+       Files existingFiles = this.Files.getById(certID);
 
         if (existingFiles == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "This CertID does not exist");
@@ -94,7 +94,7 @@ public class FilesController {
             @RequestBody Files files
 
     ){
-        if (files.CertID != null)
+        if (files.certID != null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "New file should not specify any ID");
 
         files.patientId = patientId;

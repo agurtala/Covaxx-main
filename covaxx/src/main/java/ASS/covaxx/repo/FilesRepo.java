@@ -9,8 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.security.cert.Certificate;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 @Repository
 public class FilesRepo {
@@ -22,8 +20,8 @@ public class FilesRepo {
         this.mongo.save(files);
     }
 
-    public Certificate getById(String CertID) {
-        return mongo.findById(CertID, Certificate.class);
+    public Files getById(String CertID) {
+        return mongo.findById(CertID, Files.class);
     }
 
     public Collection<Files> find(String patientId, String DocID) {
